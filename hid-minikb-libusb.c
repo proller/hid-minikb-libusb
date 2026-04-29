@@ -16,6 +16,15 @@
 #define MEDIA_PLAYPAUSE 0x00cd
 #define MEDIA_MUTE 0x00e2
 
+#define LED_MODE_0 0x00
+#define LED_MODE_1 0x01
+#define LED_MODE_255 0xff
+
+#define LED_MODE_OFF LED_MODE_0
+#define LED_MODE_STEADY LED_MODE_1
+#define LED_MODE_MIN LED_MODE_0
+#define LED_MODE_MAX LED_MODE_255
+
 #define CHECK(x, ...) if ((x)) errx(x, __VA_ARGS__)
 
 void send(struct libusb_device_handle* dh, unsigned char data[], int length) {
@@ -59,6 +68,15 @@ void set_media_key(struct libusb_device_handle* dh, unsigned char button, unsign
 	printf("set button %d to media usage %d\n", button, media_code);
 }
 
+void set_led(struct libusb_device_handle* dh, unsigned char mode) {
+	// LED modes are firmware-specific. Mode 1 is known to be steady/on for this model family.
+	send(dh, (unsigned char[65]){0x03, 0xa1, 0x01}, 65);
+	send(dh, (unsigned char[65]){0x03, 0xb0, 0x18, mode}, 65);
+	send(dh, (unsigned char[65]){0x03, 0xaa, 0xa1}, 65);
+
+	printf("set led mode %d\n", mode);
+}
+
 int main(int argc, char* argv[]) {
 	int err;
 
@@ -78,6 +96,7 @@ int main(int argc, char* argv[]) {
 	printf("connected\n");
 
 	// Modify these lines to your taste
+	// set_led(dh, LED_MODE_STEADY);
 	set_key(dh, BUTTON_1, KEY_F13);
 	set_key(dh, BUTTON_2, KEY_F14);
 	set_media_key(dh, BUTTON_3, MEDIA_PLAYPAUSE);
