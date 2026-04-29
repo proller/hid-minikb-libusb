@@ -13,8 +13,20 @@
 #define KNOB_1_PRESS 0x0e
 #define KNOB_1_RIGHT 0x0f
 
+#define MEDIA_NEXT 0x00b5
+#define MEDIA_PREVIOUS 0x00b6
+#define MEDIA_STOP 0x00b7
 #define MEDIA_PLAYPAUSE 0x00cd
 #define MEDIA_MUTE 0x00e2
+#define MEDIA_VOLUMEUP 0x00e9
+#define MEDIA_VOLUMEDOWN 0x00ea
+#define MEDIA_FAVORITES 0x0182
+#define MEDIA_CALCULATOR 0x0192
+#define MEDIA_SCREENLOCK 0x019e
+
+#define MEDIA_NEXTSONG MEDIA_NEXT
+#define MEDIA_PREVIOUSSONG MEDIA_PREVIOUS
+#define MEDIA_PLAY MEDIA_PLAYPAUSE
 
 #define LED_MODE_0 0x00
 #define LED_MODE_1 0x01
@@ -97,8 +109,8 @@ int main(int argc, char* argv[]) {
 
 	// Modify these lines to your taste
 	// set_led(dh, LED_MODE_STEADY);
-	set_key(dh, BUTTON_1, KEY_F13);
-	set_key(dh, BUTTON_2, KEY_F14);
+	set_media_key(dh, BUTTON_1, MEDIA_SCREENLOCK);
+	set_media_key(dh, BUTTON_2, MEDIA_NEXTSONG);
 	set_media_key(dh, BUTTON_3, MEDIA_PLAYPAUSE);
 	set_key(dh, KNOB_1_LEFT, KEY_VOLUMEDOWN);
 	set_media_key(dh, KNOB_1_PRESS, MEDIA_MUTE);
